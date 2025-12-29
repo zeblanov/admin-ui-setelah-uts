@@ -1,15 +1,53 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import Card from "../Elements/Card";
+import DotsMobileStepper from "../Elements/DotsMobileStepper";
+import Icon from "../Elements/Icon";
 
-function CardBalance(){
-    return (
-        <>
-            <Card
-                title="Total Balance"
-                desc="Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi, autem porro asperiores numquam sed veritatis debitis beatae amet laboriosam fuga pariatur sapiente suscipit culpa facere voluptatem. Repellat asperiores doloribus earum!"
-            />
-        </>
-    )
+function CardBalance({ data }) {
+  return (
+    <Card
+      title="Total Balance"
+      desc={
+        <DotsMobileStepper
+          data={data.map((item) => (
+            <div key={item.id} className="p-2">
+              <div className="flex justify-between">
+                <div className="text-2xl font-bold">${item.balance}</div>
+                <Link to="/balance">All account</Link>
+              </div>
+
+              <div className="border-b border-gray-200 my-4"></div>
+
+              <div className="flex justify-between bg-primary text-white p-4 rounded-md">
+                <div>
+                  Account Type
+                  <br />
+                  <span className="text-xl font-bold">
+                    {item.accountType}
+                  </span>
+                  <br />
+                  {item.accountNumber}
+                </div>
+
+                <div className="flex flex-col justify-between">
+                  <div className="ms-auto">{item.logo}</div>
+                  <div className="flex items-center">
+                    <span className="text-xl font-bold me-2">
+                      ${item.balance}
+                    </span>
+                    <div className="bg-white text-primary rounded-full p-1">
+                      <Icon.ArrowUpRight size={18} />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
+        />
+      }
+    />
+  );
 }
 
-export default CardBalance
+export default CardBalance;
