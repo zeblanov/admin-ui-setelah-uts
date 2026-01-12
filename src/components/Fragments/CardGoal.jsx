@@ -4,7 +4,10 @@ import Icon from "../Elements/Icon";
 import CompositionExample from "../Elements/CompositionExample";
 
 function CardGoal({ data }) {
-  const chartValue = (data.presentAmount / data.targetAmount) * 100;
+  const present = Number(data?.present_amount ?? 0);
+  const target = Number(data?.target_amount ?? 0);
+
+  const chartValue = target > 0 ? (present / target) * 100 : 0;
 
   return (
     <Card
@@ -13,10 +16,8 @@ function CardGoal({ data }) {
         <div className="p-2">
           <div className="flex justify-between items-center">
             <div className="flex">
-              <span className="text-2xl font-bold me-4">
-                ${data.targetAmount}
-              </span>
-              <div className="p-2 bg-gray-05 text-gray-01 rounded-md">
+              <span className="text-2xl font-bold me-4">${target}</span>
+              <div className="p-2 bg-gray-05 text-gray-01 rounded-md box-border">
                 <Icon.Edit size={16} />
               </div>
             </div>
@@ -31,9 +32,7 @@ function CardGoal({ data }) {
                 <Icon.Award />
                 <div className="ms-2">
                   <div>Target Achieved</div>
-                  <div className="font-bold text-xl text-black">
-                    ${data.presentAmount}
-                  </div>
+                  <div className="font-bold text-xl text-black">${present}</div>
                 </div>
               </div>
 
@@ -41,9 +40,7 @@ function CardGoal({ data }) {
                 <Icon.Target />
                 <div className="ms-2">
                   <div>This Month Target</div>
-                  <div className="font-bold text-xl text-black">
-                    ${data.targetAmount}
-                  </div>
+                  <div className="font-bold text-xl text-black">${target}</div>
                 </div>
               </div>
             </div>
