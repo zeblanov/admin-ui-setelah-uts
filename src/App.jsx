@@ -4,13 +4,15 @@ import SignUpPage from "./pages/signUp";
 import ErrorPage from "./pages/error";
 import DashboardPage from "./pages/dashboard";
 import BalancePage from "./pages/balance";
+// Import halaman expense jika ada
+// import ExpensePage from "./pages/expense"; 
+
 import {
   createBrowserRouter,
   RouterProvider,
-  Link,
   Navigate,
 } from "react-router-dom";
-import { Children, useContext } from "react";
+import { useContext } from "react";
 import { AuthContext } from "./context/authContext";
 
 function App() {
@@ -30,6 +32,7 @@ function App() {
           <DashboardPage />
         </RequireAuth>
       ),
+      errorElement: <ErrorPage />, // Tambahkan ini agar error tidak putih polos
     },
     {
       path: "/login",
@@ -52,6 +55,16 @@ function App() {
       element: (
         <RequireAuth>
           <BalancePage />
+        </RequireAuth>
+      ),
+    },
+    // TAMBAHKAN RUTE INI AGAR TIDAK 404 SAAT KLIK MENU EXPENSE
+    {
+      path: "/expense", 
+      element: (
+        <RequireAuth>
+          {/* Ganti dengan komponen halaman expense Anda */}
+          <DashboardPage /> 
         </RequireAuth>
       ),
     },
