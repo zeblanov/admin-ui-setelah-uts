@@ -1,28 +1,26 @@
 import "./App.css";
+import { createBrowserRouter, RouterProvider, Navigate } from "react-router-dom";
+import { useContext } from "react";
+import { AuthContext } from "./context/authContext";
+
+// pages
 import SignInPage from "./pages/signIn";
 import SignUpPage from "./pages/signUp";
 import ErrorPage from "./pages/error";
 import DashboardPage from "./pages/dashboard";
 import BalancePage from "./pages/balance";
-// Import halaman expense jika ada
-// import ExpensePage from "./pages/expense"; 
-
-import {
-  createBrowserRouter,
-  RouterProvider,
-  Navigate,
-} from "react-router-dom";
-import { useContext } from "react";
-import { AuthContext } from "./context/authContext";
+import ExpensePage from "./pages/expenses"; // ✅ INI PENTING
 
 function App() {
   const { user } = useContext(AuthContext);
 
-  const RequireAuth = ({ children }) =>
-    user ? children : <Navigate to="/login" />;
+  const RequireAuth = ({ children }) => {
+    return user ? children : <Navigate to="/login" />;
+  };
 
-  const NotRequireAuth = ({ children }) =>
-    user ? <Navigate to="/" /> : children;
+  const NotRequireAuth = ({ children }) => {
+    return user ? <Navigate to="/" /> : children;
+  };
 
   const myRouter = createBrowserRouter([
     {
@@ -32,7 +30,7 @@ function App() {
           <DashboardPage />
         </RequireAuth>
       ),
-      errorElement: <ErrorPage />, // Tambahkan ini agar error tidak putih polos
+      errorElement: <ErrorPage />,
     },
     {
       path: "/login",
@@ -58,13 +56,11 @@ function App() {
         </RequireAuth>
       ),
     },
-    // TAMBAHKAN RUTE INI AGAR TIDAK 404 SAAT KLIK MENU EXPENSE
     {
-      path: "/expense", 
+      path: "/expense", // ✅ SESUAI MENU
       element: (
         <RequireAuth>
-          {/* Ganti dengan komponen halaman expense Anda */}
-          <DashboardPage /> 
+          <ExpensePage />
         </RequireAuth>
       ),
     },

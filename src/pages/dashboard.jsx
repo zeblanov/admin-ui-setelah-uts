@@ -82,7 +82,6 @@ function Dashboard() {
         </div>
       </div>
 
-      {/* Snackbar untuk error API */}
       <AppSnackbar
         open={snackbar.open}
         message={snackbar.message}

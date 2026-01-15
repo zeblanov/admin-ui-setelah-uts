@@ -7,9 +7,12 @@ import { NavLink } from "react-router-dom";
 import { ThemeContext } from "../../context/themeContext";
 import { AuthContext } from "../../context/authContext";
 import { logoutService } from "../../services/authService";
+import Backdrop from "@mui/material/Backdrop";
+import CircularProgress from "@mui/material/CircularProgress";
 
 function MainLayout(props) {
   const { children } = props;
+  const [isLoggingOut, setIsLoggingOut] = useState(false); // State untuk loading logout
 
   const themes = [
     { name: "theme-green", bgcolor: "bg-[#299D91]", color: "#299D91" },
@@ -24,12 +27,7 @@ function MainLayout(props) {
   const menu = [
     { id: 1, name: "Overview", icon: <Icon.Overview />, link: "/" },
     { id: 2, name: "Balances", icon: <Icon.Balance />, link: "/balance" },
-    {
-      id: 3,
-      name: "Transaction",
-      icon: <Icon.Transaction />,
-      link: "/transaction",
-    },
+    { id: 3, name: "Transaction", icon: <Icon.Transaction />, link: "/transaction" },
     { id: 4, name: "Bills", icon: <Icon.Bill />, link: "/bill" },
     { id: 5, name: "Expenses", icon: <Icon.Expense />, link: "/expense" },
     { id: 6, name: "Goals", icon: <Icon.Goal />, link: "/goal" },
@@ -39,11 +37,16 @@ function MainLayout(props) {
   const { user, logout } = useContext(AuthContext);
 
   const handleLogout = async () => {
+    setIsLoggingOut(true); // Tampilkan Backdrop saat klik logout
     try {
       await logoutService();
-      logout();
+      // Simulasi delay sedikit agar user bisa melihat proses "Logging Out"
+      setTimeout(() => {
+        logout();
+      }, 1000);
     } catch (err) {
       console.error(err);
+      setIsLoggingOut(false); // Sembunyikan jika error
       if (err.status === 401) {
         logout();
       }
@@ -111,6 +114,7 @@ function MainLayout(props) {
             </div>
           </div>
         </aside>
+
         <div className="bg-special-mainBg flex-1 flex flex-col">
           <header className="border-b border-gray-05 px-6 py-7 flex justify-between items-center">
             <div className="flex items-center">
@@ -130,6 +134,20 @@ function MainLayout(props) {
           <main className="flex-1 px-6 py-4">{children}</main>
         </div>
       </div>
+
+      {/* BACKDROP COMPONENT */}
+      <Backdrop
+        sx={{ 
+            color: '#fff', 
+            zIndex: (theme) => theme.zIndex.drawer + 1,
+            flexDirection: 'column',
+            gap: 2
+        }}
+        open={isLoggingOut}
+      >
+        <CircularProgress color="inherit" />
+        <p className="text-white font-medium">Logging Out</p>
+      </Backdrop>
     </>
   );
 }
